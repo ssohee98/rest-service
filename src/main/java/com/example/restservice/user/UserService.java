@@ -17,9 +17,9 @@ public class UserService {
 
     //처음 클래스 로딩되자마자 static 부분 실행
     static {
-        users.add(new User(1, "ssohee1", new Date()));
-        users.add(new User(2, "ssohee22", new Date()));
-        users.add(new User(3, "ssohee333", new Date()));
+        users.add(new User(1, "ssohee1", new Date(), "pass1", "701010-111111"));
+        users.add(new User(2, "ssohee22", new Date(), "pass2", "801010-222222"));
+        users.add(new User(3, "ssohee333", new Date(), "pass3", "901010-333333"));
     }
 
     //user 목록 모두 출력

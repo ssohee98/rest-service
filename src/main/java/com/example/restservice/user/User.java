@@ -1,5 +1,8 @@
 package com.example.restservice.user;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +13,17 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//@JsonIgnoreProperties(value = {"pw, ssn"})
+@JsonFilter("UserInfo")
 public class User {
     private Integer id;
     @Size(min=2, message="Name은 2글자 이상 입력")
     private String name;
     private Date joinDate;
+
+    //민감한 pw, 주민등록번호
+    //@JsonIgnore
+    //pw 값은 담겼지만 노출하지 않음
+    private String password;
+    private String ssn;
 }
