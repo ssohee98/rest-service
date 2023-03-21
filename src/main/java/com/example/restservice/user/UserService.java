@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -44,5 +45,21 @@ public class UserService {
         users.add(user);
 
         return user;
+    }
+
+    //user에서 삭제
+    public User deleteById(int id) {
+        Iterator<User> iterator = users.iterator();
+        
+        while(iterator.hasNext()) { //iterator에 값이 있으면
+            User user = iterator.next();  //하나씩 user에 가져오기
+            
+            if (user.getId() == id) {
+                users.remove(id);
+                return user;
+            } 
+        }
+        
+        return null;
     }
 }
