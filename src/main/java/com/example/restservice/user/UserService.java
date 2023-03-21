@@ -2,6 +2,7 @@ package com.example.restservice.user;
 
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +21,12 @@ public class UserService {
         users.add(new User(3, "ssohee333", new Date()));
     }
 
+    //user 목록 모두 출력
     public List<User> findAll() {
         return users;
     }
 
+    //id가 같은 user 한명 출력
     public User findOne(int id) {  //User의 integer id (wrapper class: 기본 오브젝트형)와 int id 다르지만
         for(User user : users) {  //users배열에서 user로 하나씩 받아와서
             if(user.getId() == id) {  //자동 언박싱(user.getId() integer -> int)
@@ -31,5 +34,15 @@ public class UserService {
             }
         }
         return null;
+    }
+
+    //user에 입력값 저장
+    public User saveUser(User user) {
+        if(user.getId() == null) {
+            user.setId(++usersCount);
+        }
+        users.add(user);
+
+        return user;
     }
 }
