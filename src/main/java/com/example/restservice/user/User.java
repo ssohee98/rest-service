@@ -7,11 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -32,4 +31,8 @@ public class User {
     //pw 값은 담겼지만 노출하지 않음
     private String password;
     private String ssn;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 }
+
