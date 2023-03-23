@@ -5,8 +5,45 @@
 
 <mapper namespace="com.example.restservice.user.UserMapper">
 
-    <select id="findAllUsers" resultType="User">
-        select * from users
+    <resultMap id="userMap" type="com.example.restservice.user.User">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="joinDate" column="joinDate"/>
+        <result property="password" column="password"/>
+        <result property="ssn" column="ssn"/>
+        <collection property="posts" resultMap="postMap"></collection>
+    </resultMap>
+
+    <resultMap id="postMap" type="com.example.restservice.user.Post">
+        <result property="id" column="id"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="findAllUsers" resultMap="userMap">
+        select u.id, name, joinDate, password, ssn, p.id, description
+        from users u LEFT OUTER JOIN posts p ON u.id = p.user_id
+    </select>
+
+    <select id="findUser" resultMap="userMap">
+        select u.id, name, joinDate, password, ssn, p.id, description
+        from users u LEFT OUTER JOIN posts p ON u.id = p.user_id
+        where u.id = #{id}
+    </select>
+
+    <insert id="createUser">
+        insert into users(id, name, joindate, password, ssn) values(user_seq.nextval, #{name}, sysdate, #{password}, #{ssn})
+    </insert>
+
+    <delete id="deleteUser">
+        delete from users where id = #{id}
+    </delete>
+
+    <insert id="createPost">
+        insert into posts(id, description, user_id) values(post_seq.nextval, #{description}, #{user_id})
+    </insert>
+
+    <select id="findAllPost" resultMap="postMap">
+        select * from posts where user_id = #{id}
     </select>
     
 </mapper>

@@ -24,5 +24,6 @@ public class Post {
     //data는 불러오지만 민감정보 출력하지 않도록 JsonIgnore 설정
     //@ManyToOne(fetch = FetchType.LAZY)
     //@JsonIgnore
-    private User user;
+    //private User user;
+    private int user_id;
 }

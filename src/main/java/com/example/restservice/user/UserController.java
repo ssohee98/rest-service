@@ -29,40 +29,54 @@ public class UserController {
         return service.findAll();
     }
 
-//    @GetMapping("/users/{id}")
-//    public EntityModel<User> retrieveUser(@PathVariable int id) {
-//        User user = service.findOne(id);
-//
-//        if(user == null) {
-//            throw new UserNotFoundException(String.format("ID[%s] not found", id));
-//        }
-//
-//        //user와 link를 함께 리턴
-//        return EntityModel.of(user,
-//                linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users"));
-//    }
-//
-//    @PostMapping("/users")
-//    public ResponseEntity createUser(@Valid @RequestBody User user) {
-//        //JSON 형태를 자바 객체 형태로 바꿔주기 위해 @RequestBody
-//        User savedUser = service.saveUser(user);
-//
-//        //새로 추가 URI (/users/{id})
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(savedUser.getId())
-//                .toUri();
-//
-//        //location (URI) 정보 전달
-//        return ResponseEntity.created(location).build();
-//    }
-//
-//    @DeleteMapping("/users/{id}")
-//    public void deleteUser(@PathVariable int id) {
-//        User user = service.deleteById(id);
-//
-//        if(user == null) {
-//            throw new UserNotFoundException(String.format("ID[%s] not found", id));
-//        }
-//    }
+    @GetMapping("/users/{id}")
+    public EntityModel<User> retrieveUser(@PathVariable int id) {
+        User user = service.findUser(id);
+
+        if(user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        //user와 link를 함께 리턴
+        return EntityModel.of(user,
+                linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users"));
+    }
+
+    @PostMapping("/users")
+    public void createUser(@Valid @RequestBody User user) {
+        //JSON 형태를 자바 객체 형태로 바꿔주기 위해 @RequestBody
+        service.saveUser(user);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        User user = service.findUser(id);
+
+        if(user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        } service.deleteUser(id);
+    }
+
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostByUser(@PathVariable int id) {
+        User user = service.findUser(id);
+
+        if(user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        return service.findAllPost(id);
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public void createPosts(@PathVariable int id, @RequestBody Post post) {
+        User user = service.findUser(id);
+
+        if(user == null) {  //user 객체가 존재하는지 아닌지
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        post.setUser_id(id);
+        service.savePost(post);
+    }
 }
